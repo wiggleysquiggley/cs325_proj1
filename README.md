@@ -1,4 +1,4 @@
-To install Phi3 on your computer using Ollama:
+To install and run Phi3 on your computer using Ollama:
 1. go to ollama.com/download/windows
 2. click "Download for Windows (Preview)"
 3. after download is complete, go to command prompt or VScode terminal and run the command "ollama"
