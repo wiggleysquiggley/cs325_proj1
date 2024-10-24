@@ -27,7 +27,7 @@ for line in lines:
     url = seller_fdbk['href']
     response = requests.get(url)
 
-    #parsea the page content
+    #parses the page content
     soup = BeautifulSoup(response.content, "html.parser")
 
     #finds div where comments are stored
