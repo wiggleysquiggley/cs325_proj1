@@ -36,6 +36,9 @@ This program was written to scrape a website and parse through the content, writ
 2. make sure _**project3.py**_ and _**urls.txt**_ are in the same folder
 3. click run in the _**project3.py**_ file. files consisting of the comments and sentiments will appear along with a bar graph that has the results of the analysis of the comments
 
+## Example graph output
+![Bar graph](bar_graph.png)
+
 ## Troubleshooting
 - if Ollama does not work after downloaing, try closing and reopening VSCode or Command Prompt and running the command "ollama" again
 - if program is taking too long to run, try quiting and rerunning Ollama
