@@ -10,7 +10,6 @@ from bs4 import BeautifulSoup
 
 #import matplotlib libraries for graph
 import matplotlib.pyplot as plt
-import matplotlib.colors as mcolors
 import numpy as np
 
 import textwrap
@@ -152,7 +151,7 @@ class Graph:
         plt.xlabel('Devices')
         plt.ylabel('Number of Sentiments')
         plt.title('Sentiments for Devices')
-        plt.xticks(x, wrapped_labels, fontzie=8)  # Set x-axis labels
+        plt.xticks(x, wrapped_labels, fontsize=8)  # Set x-axis labels
         plt.legend(title = 'Sentiment Types')
 
         plt.show()
