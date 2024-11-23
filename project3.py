@@ -136,7 +136,7 @@ class Analyzer:
         neutral_values.append(neutral_count)
 
 class Graph:
-    def plot(categories, pos_values, neg_values, neutral_values):
+    def plot(self, categories, pos_values, neg_values, neutral_values):
         # Position for each bar
         x = np.arange(len(categories))
 
@@ -154,15 +154,18 @@ class Graph:
         plt.xticks(x, wrapped_labels, fontsize=8)  # Set x-axis labels
         plt.legend(title = 'Sentiment Types')
 
+    def print_plot(self):
         plt.show()
 
+if __name__ == "__main__":
+    scraper = Scraper('urls.txt')
+    analyzer = Analyzer()
+    graph = Graph()
+    categories, pos_values, neg_values, neutral_values = [], [], [], []
 
-scraper = Scraper('urls.txt')
-analyzer = Analyzer()
-categories, pos_values, neg_values, neutral_values = [], [], [], []
+    for url in scraper.urls:
+        filename, comments = scraper.fetch_comments(url)
+        analyzer.count_sentiments(comments, filename)
 
-for url in scraper.urls:
-    filename, comments = scraper.fetch_comments(url)
-    analyzer.count_sentiments(comments, filename)
-
-Graph.plot(categories, pos_values, neg_values, neutral_values)
+    graph.plot(categories, pos_values, neg_values, neutral_values)
+    graph.print_plot()
