@@ -1,9 +1,13 @@
+#import pytest library
 import pytest
 
+#import matplotlib library for graph
 import matplotlib.pyplot as plt
 
+#import StringIO for mock file objects
 from io import StringIO
 
+#import classes from project3 for testing
 from project3 import Scraper, Analyzer, Graph
 
 #testing to make sure urls are able to be fetched
