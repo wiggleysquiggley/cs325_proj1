@@ -8,18 +8,20 @@ import ollama
 import requests
 from bs4 import BeautifulSoup
 
-#import matplotlib libraries for graph
+#import matplotlib, numpy, and textwrap libraries for graph
 import matplotlib.pyplot as plt
 import numpy as np
-
 import textwrap
 
+#class for scrapping website
 class Scraper:
     def __init__(self, urls_file):
+        #assigns file name for urls and calls get_urls()
         self.urls_file = urls_file
         self.urls = self.get_urls()
 
     def get_urls(self):
+        #opens and reads file containing urls and assigns to lines
         with open(self.urls_file, 'r', encoding='utf-8') as f:
             lines = f.readlines()
         return lines
@@ -86,10 +88,11 @@ class Scraper:
             lines = [line.strip() for line in f.readlines() if line.strip()]
         
         return filename, lines
-    
+
+#class for analyzing the sentiment of comments    
 class Analyzer:
     def analyze_comments(self, line, filename):
-        #API for ollama
+        #API for ollama to analyze the sentiment of line
         result = ollama.chat(
             model = 'phi3',                                     #using model phi3
             messages = [{'role': 'user', 'content': f'Using only one word, classify the sentiment of this review as positive, negative, or neutral: "{line}"'}],     #declaring role as user with content of a single line
@@ -101,24 +104,28 @@ class Analyzer:
         )
         
         full_result = ''
-        #for each chunk in result it appends the generated response chunk to the filename_output.txt file
+        #for each chunk in result it adds to full_result, generating the full response
         for chunk in result:
             full_result += chunk['message']['content']
 
+        #modifies result to strip white space and make all lowercase for easier assessment
         stripped_result = full_result.strip().lower()
 
+        #write stripped results to file
         with open(filename + "_output.txt", "a", encoding='utf-8') as f_a:
             f_a.write(stripped_result + "\n")
 
         return stripped_result
-
         
     def count_sentiments(self, comments, filename):
+        #initialize counts to zero
         pos_count = 0
         neg_count = 0
         neutral_count = 0
 
+        #goes through each comment that was passed through
         for comment in comments:
+            #calls analyze_comments to get the analysis of the comment
             sentiment = self.analyze_comments(comment, filename)
             if "positive" in sentiment:
                 pos_count += 1
@@ -127,45 +134,52 @@ class Analyzer:
             elif "neutral" in sentiment:
                 neutral_count += 1
 
-        with open("total_results.txt", "a", encoding='utf-8') as f_r:
-            f_r.write(f"{filename}: pos: {pos_count} neg: {neg_count} neutral: {neutral_count}\n")
-
+        #takes filename and total counts of positive, negative, and neutral and adds to its respective list
         categories.append(filename)
         pos_values.append(pos_count)
         neg_values.append(neg_count)
         neutral_values.append(neutral_count)
 
+#class for creating a bar graph for the total sentiments of each type for each product
 class Graph:
     def plot(self, categories, pos_values, neg_values, neutral_values):
-        # Position for each bar
+        #position for each bar
         x = np.arange(len(categories))
 
+        #makes it so the title of each device are elligible since they're very long
         wrapped_labels = [textwrap.fill(label, width=25) for label in categories]
 
-        # Plot bars
+        #plot bars for positive, negative, and neutral counts for each product
         plt.bar(x - 0.2, pos_values, width=0.2, label='Positive', color='cornflowerblue')
         plt.bar(x      , neg_values, width=0.2, label='Negative', color='tomato')
         plt.bar(x + 0.2, neutral_values, width=0.2, label='Neutral', color='gold')
 
-        # Add labels and title
+        #add labels and title
         plt.xlabel('Devices')
         plt.ylabel('Number of Sentiments')
         plt.title('Sentiments for Devices')
-        plt.xticks(x, wrapped_labels, fontsize=8)  # Set x-axis labels
+        plt.xticks(x, wrapped_labels, fontsize=8)   #for each device specifically, fontsize 8 so titles fit on screen
         plt.legend(title = 'Sentiment Types')
 
+    #function to specifically print the bar graph
     def print_plot(self):
         plt.show()
 
 if __name__ == "__main__":
+    #creating instances for each class
     scraper = Scraper('urls.txt')
     analyzer = Analyzer()
     graph = Graph()
+    #initializing the lists
     categories, pos_values, neg_values, neutral_values = [], [], [], []
 
+    #going through each url in url file
     for url in scraper.urls:
+        #fetching the comments
         filename, comments = scraper.fetch_comments(url)
+        #counting the sentiments for the comments
         analyzer.count_sentiments(comments, filename)
 
+    #creating graph and showing said graph
     graph.plot(categories, pos_values, neg_values, neutral_values)
     graph.print_plot()
