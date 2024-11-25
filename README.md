@@ -1,5 +1,5 @@
 # About this project
-This program was written to scrape a website and parse through the content, writing all of the comments of multiple different devices to different files. It then takes each file full of comments and asks Phi3 to describe the review as positive, negative, or neutral. All of these results are also written to a file, each device having their own file once again. The number of positive, negative, and neutral comments are counted and recorded. Once all items have gone through this process, a bar graph that displays the number of positive, negative, and neutral comments there are for each device is created.
+This program was written to scrape a website and parse through the content, writing all of the comments of multiple different devices to different files. It then takes each file full of comments and asks Phi3 to describe the review as positive, negative, or neutral. All of these results are also written to a file, each device having their own file once again. The number of positive, negative, and neutral comments are counted and recorded. Once all items have gone through this process, a bar graph that displays the number of positive, negative, and neutral comments there are for each device is created. This program was also developed with Open-Closed Principle in mind.
 
 ## Requirements & how to download
 - ### Create an environment
